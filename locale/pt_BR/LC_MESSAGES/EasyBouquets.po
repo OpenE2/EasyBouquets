@@ -1,0 +1,223 @@
+# Czech translations for enigma package.
+# Copyright (C) 2009 THE enigma'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the enigma package.
+# Automatically generated, 2012.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: EasyBouquet 1.9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-05-24 06:31+0100\n"
+"PO-Revision-Date: 2012-12-22 09:26-0300\n"
+"Last-Translator: gravatasufoca <gravatasufoca@yahoo.com.br>\n"
+"Language-Team: gravatasufoca <gravatasufoca@yahoo.com.br>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-SourceCharset: iso-8859-15\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Language: pt_BR\n"
+"X-Generator: Poedit 1.5.4\n"
+
+#
+msgid "Preferential Satellite"
+msgstr "Satélite Preferencial"
+
+#
+msgid "Add satellite name"
+msgstr "Adicionar o nome do satélite"
+
+#
+msgid "Cancel"
+msgstr "Cancelar"
+
+#
+msgid "Create"
+msgstr "Criar"
+
+#
+msgid ""
+"All your current favorites will be deleted!\n"
+"Do you confirm the creating of the new ones?"
+msgstr ""
+"Todos os seus favoritos atuais serão apagados!\n"
+"Confirma a criação dos novos favoritos?"
+
+#
+msgid "Creating favorites"
+msgstr "Criando favoritos"
+
+#
+msgid "Deleting old favorites"
+msgstr "Apagando favoritos antigos"
+
+#
+msgid "Writing favorites"
+msgstr "Escrevendo favoritos"
+
+#
+msgid "Writing blacklist"
+msgstr "Escrevendo blacklist"
+
+#
+msgid "Finished"
+msgstr "Concluído"
+
+#
+msgid "Reloading bouquets"
+msgstr "Regarregando favoritos"
+
+#
+msgid ""
+"The \"Favourites (Tv)\" bouquet will be created based on the \"Preferential "
+"Satellite\" chosen."
+msgstr ""
+"O \"Favourites (Tv)\" será criado baseado no \"Satélite Preferencial\" "
+"escolhido."
+
+#
+msgid "Help"
+msgstr "Ajuda"
+
+#
+msgid ""
+"The rules file is at /etc/easyBouquet/rules.conf. You can open it using a "
+"text editor and edit it.\n"
+"The rule syntax is simple like this:\n"
+"\tNews=CNN,Deutsche Welle\n"
+"It will create the bouquet \"News\" and add \"CNN\", and \"Deutsche Welle\" "
+"services in it.\n"
+"A more complex rule could be made like this:\n"
+"\tNews=CNN*,!CNNi,*News*\n"
+"It means that every service which the name begins with \"CNN\" and IS NOT "
+"\"CNNi\" and every service that have the word \"News\" in it will be added "
+"in the \"News\" bouquet.\n"
+"You can also specify the satellite that the service should be used:\n"
+"\tNew=-610:CNN,-431:*News*,Deutsche Welle\n"
+"It will include the CNN service from the -610 satellite and every service "
+"that have the word \"News\", and finally the \"Deutsche Welle\" service from "
+"the preferential satellite.\n"
+"\n"
+"There are 3 reserved rules:\n"
+"\texclude: All the rules here will exclude the services to be added on the "
+"bouquets.\n"
+"\tfavourites: It will include the services in its bouquet based on its "
+"rules.\n"
+"\t\tAll the services from the Preferential Satellite will be added in the "
+"Favourites (Tv) bouquet, except the excluded ones.\n"
+"\tblacklist: Will add the parentol control for the services based on the "
+"blacklist rules."
+msgstr ""
+"O arquivo de regras está em /etc/easyBouquet/rules.conf. Você pode edita-lo "
+"em um editor de texto qualquer.\n"
+"A sintaxe das regras são simples assim:\n"
+"\tNews=CNN,Deutsche Welle\n"
+"Será criado o bouquet \"News\" e adicionado os canais \"CNN\", e \"Deutsche "
+"Welle\" nele.\n"
+"Uma regra mais complexa pode ser feita desta forma:\n"
+"\tNews=CNN*,!CNNi,*News*\n"
+"Significa que todos os canais que comecem com \"CNN\" e NÃO É \"CNNi\" e que "
+"todos os canais que tenha a palavra \"News\" serão adicionados no bouquet "
+"\"News\".\n"
+"Você também pode especificar o satélite o qual o canal pertence:\n"
+"\tNew=-610:CNN,-431:*News*,Deutsche Welle\n"
+"Será incluído o canal CNN do satélite -610 e todos os canais que tenham a "
+"palavra \"News\", e por fim o canal \"Deutsche Welle\" do satélite "
+"preferencial será incluído.\n"
+"\n"
+"Existem 3 regras reservadas:\n"
+"\texclude: As regras aqui excluirão os canais de serem incluídos nos "
+"bouquets.\n"
+"\tfavourites: Regras de inclusão de canais de outros satélites no bouquet "
+"Favourites (Tv)\n"
+"\t\tTodos os canais do satélite preferencial serão incluídos no bouquet "
+"Favourites (Tv), exceto os que estão na regra de exclude\n"
+"\tblacklist: Incluirá o controle paternal nos canais cobertos pela regra."
+
+#
+msgid ""
+"The equal character (=) was not found at this line!\n"
+"%s"
+msgstr ""
+"O caractere igual (=) não foi encontrado nesta linha!\n"
+"%s"
+
+#
+msgid "Rules Configuration"
+msgstr "Configuração de Regras"
+
+#
+msgid "Rule"
+msgstr "Regra"
+
+#
+msgid "Not"
+msgstr "Negado"
+
+#
+msgid "Save"
+msgstr "Salvar"
+
+#
+msgid "None"
+msgstr "Nenhum"
+
+#
+msgid "Bouquets Configuration"
+msgstr "Configuração de Favoritos"
+
+#
+msgid "Bouquet"
+msgstr "Favorito"
+
+#
+msgid "Add rule"
+msgstr "Adicionar regra"
+
+#
+msgid "Bouquets List"
+msgstr "Lista de Favoritos"
+
+#
+msgid "Move"
+msgstr "Mover"
+
+#
+msgid "Sort Bouquets"
+msgstr "Ordernar Favoritos"
+
+#
+msgid "Up"
+msgstr "Acima"
+
+#
+msgid "Down"
+msgstr "Abaixo"
+
+#
+msgid "Direction"
+msgstr "Direção"
+
+#
+msgid "Amount"
+msgstr "Quantidade"
+
+#
+msgid "Do you really want to remove the rule?"
+msgstr "Confirma a exclusão da regra?"
+
+#
+msgid "Select a rule first!"
+msgstr "Selecione uma regra primeiro"
+
+#
+msgid "Do you really want to remove the bouquet?"
+msgstr "Confirma a exclusão do favorito?"
+
+#
+msgid "Select a bouquet first!"
+msgstr "Selecione um favorito primeiro"
+
+#
+msgid "The field is required!"
+msgstr "Campo requerido!"
