@@ -23,36 +23,36 @@ config.plugins.BouquetConf.name = ConfigText(fixed_size=False)
 class BouquetScreenConf(ConfigListScreen, Screen):
 
     skin = """
-        <screen name="bouquet" title="%s" position="center,center" size="750,600">            
+        <screen name="bouquet" title="" position="center,center" size="750,600">
               
-            <ePixmap pixmap="$PLUGINDIR$/buttons/green.png" position="15,560" size="26,26" alphatest="on" />
-            <widget source="key_green" render="Label" position="55,560" size="220,28" backgroundColor="#A9A9A9" zPosition="2" transparent="1" foregroundColor="grey" font="Regular;24" halign="left" />
+          	<ePixmap pixmap="$PLUGINDIR$/buttons/green.png" position="54,560" size="26,26" alphatest="on" />
+            <widget source="key_green" render="Label" position="87,560" size="220,28" backgroundColor="#A9A9A9" zPosition="2" transparent="1" foregroundColor="grey" font="Regular;24" halign="left" />
 
-            <widget name="config" position="10,15" size="740,30" scrollbarMode="showOnDemand" selectionPixmap="$PLUGINDIR$/buttons/sel.png" />
-            <widget transparent="1" name="menu" position="10,45" size="740,510" scrollbarMode="showOnDemand" />
-         </screen>""" %(_("Bouquets Configuration"))   
+            <widget name="config" position="55,17" size="640,30" scrollbarMode="showOnDemand" selectionPixmap="$PLUGINDIR$/buttons/sel.png" font="Regular; 24" />
+            <widget transparent="1" name="menu" position="101,57" size="594,493" scrollbarMode="showOnDemand" render="Listbox" itemHeight="25" font="Regular;24" />
+         </screen>"""
 
     skinEdit = """
-        <screen name="bouquet" title="%s" position="center,center" size="750,600">            
+        <screen name="bouquet" title="" position="center,center" size="750,600">
               
-            <ePixmap pixmap="$PLUGINDIR$/buttons/green.png" position="15,560" size="26,26" alphatest="on" />
-            <widget source="key_green" render="Label" position="55,560" size="220,28" backgroundColor="#A9A9A9" zPosition="2" transparent="1" foregroundColor="grey" font="Regular;24" halign="left" />
+           <ePixmap pixmap="$PLUGINDIR$/buttons/green.png" position="15,560" size="26,26" alphatest="on" />
+            <widget source="key_green" render="Label" position="46,560" size="162,26" backgroundColor="#A9A9A9" zPosition="2" transparent="1" foregroundColor="grey" font="Regular;24" halign="left" />
 
-            <ePixmap pixmap="$PLUGINDIR$/buttons/yellow.png" position="190,560" size="26,26" alphatest="on" />
-            <widget source="key_yellow" render="Label" position="230,560" size="220,28" backgroundColor="#A9A9A9" zPosition="2" transparent="1" foregroundColor="grey" font="Regular;24" halign="left" />
+            <ePixmap pixmap="$PLUGINDIR$/buttons/yellow.png" position="220,560" size="26,26" alphatest="on" />
+            <widget source="key_yellow" render="Label" position="256,560" size="220,26" backgroundColor="#A9A9A9" zPosition="2" transparent="1" foregroundColor="grey" font="Regular;24" halign="left" />
 
-            <ePixmap pixmap="$PLUGINDIR$/buttons/blue.png" position="345,560" size="26,26" alphatest="on" />
-            <widget source="key_blue" render="Label" position="385,560" size="220,28" backgroundColor="#A9A9A9" zPosition="2" transparent="1" foregroundColor="grey" font="Regular;24" halign="left" />
+            <ePixmap pixmap="$PLUGINDIR$/buttons/blue.png" position="480,560" size="26,26" alphatest="on" />
+            <widget source="key_blue" render="Label" position="514,560" size="220,26" backgroundColor="#A9A9A9" zPosition="2" transparent="1" foregroundColor="grey" font="Regular;24" halign="left" />
 
-            <widget name="config" position="10,15" size="740,30" scrollbarMode="showOnDemand" selectionPixmap="$PLUGINDIR$/buttons/sel.png" />
-            <widget transparent="1" name="menu" position="10,45" size="740,510" scrollbarMode="showOnDemand" />
-         </screen>""" %(_("Bouquets Configuration"))                 
+           <widget name="config" position="55,17" size="640,30" scrollbarMode="showOnDemand" selectionPixmap="$PLUGINDIR$/buttons/sel.png" font="Regular; 24" />
+            <widget transparent="1" name="menu" position="101,57" size="594,493" scrollbarMode="showOnDemand" render="Listbox" itemHeight="25" font="Regular;24"/>
+         </screen>"""
         
     def __init__(self, session, favname):
         
         self.favname = ""
         self.old_name = ""
-        
+
         self.edit = False
         if favname is not -1:
             self.edit = True
@@ -66,6 +66,7 @@ class BouquetScreenConf(ConfigListScreen, Screen):
         
         self.session = session
         Screen.__init__(self, session)
+        self["Title"].text = _("Bouquets Configuration")
         self.menuList = []
         self.onShow.append(self.updateMenu)
         self["menu"] = MenuList(self.menuList, enableWrapAround=True)

@@ -26,22 +26,21 @@ config.plugins.RuleConf.ordem = ConfigText(fixed_size=False)
 class RuleScreenConf(ConfigListScreen, Screen):
 
     skin = """
-        <screen name="bouquet" title="%s" position="center,center" size="750,600">            
-              
-            <ePixmap pixmap="$PLUGINDIR$/buttons/red.png" position="15,560" size="26,26" alphatest="on" />
-            <widget source="key_red" render="Label" position="55,560" size="220,28" backgroundColor="#A9A9A9" zPosition="2" transparent="1" foregroundColor="grey" font="Regular;24" halign="left" />
+        <screen name="bouquet" position="center,center" size="759,609">
+                <ePixmap pixmap="$PLUGINDIR$/buttons/red.png" position="35,560" size="26,26" alphatest="on" />
+                <widget source="key_red" render="Label" position="72,560" size="271,26" backgroundColor="#A9A9A9" zPosition="2" transparent="1" foregroundColor="grey" font="Regular;24" halign="left" />
 
-            <ePixmap pixmap="$PLUGINDIR$/buttons/green.png" position="190,560" size="26,26" alphatest="on" />
-            <widget source="key_green" render="Label" position="230,560" size="220,28" backgroundColor="#A9A9A9" zPosition="2" transparent="1" foregroundColor="grey" font="Regular;24" halign="left" />
-            
-            <widget name="config" position="10,15" size="600,550" scrollbarMode="showOnDemand" selectionPixmap="$PLUGINDIR$/buttons/sel.png" />
-         </screen>"""%(_("Rules Configuration"))          
+                <ePixmap pixmap="$PLUGINDIR$/buttons/green.png" position="359,560" size="26,26" alphatest="on" />
+                <widget source="key_green" render="Label" position="397,560" size="327,26" backgroundColor="#A9A9A9" zPosition="2" transparent="1" foregroundColor="grey" font="Regular;24" halign="left" />
+
+                <widget name="config" position="35,29" size="691,526" scrollbarMode="showOnDemand" selectionPixmap="$PLUGINDIR$/buttons/sel.png" font="Regular;24"/>
+        </screen>"""
         
     def __init__(self, session,rule,favname):
         self.skin=RuleScreenConf.skin.replace("$PLUGINDIR$", utils.easybouquet_plugindir)
         self.session = session
         Screen.__init__(self, session)
-            
+        self["Title"].text = _("Rules Configuration")
         self.list = []
         self.favname = favname
         self.old = {"not":False,"sat":"","tp":"","sid":"","rule":"","hd":False,"order":""}

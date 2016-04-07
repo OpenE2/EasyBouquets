@@ -2,39 +2,44 @@
 # Feel free to add comments and pas extra stuff You would have fitted in.
 # gravatasufoca@yahoo.com.br
 # Bruno Teixeira canto de Lima
-
-from Screens.MessageBox import MessageBox
-from Components.Sources.StaticText import StaticText
 import re
-from Components.MenuList import MenuList
-from Screens.Screen import Screen
+
 from Components.ActionMap import ActionMap
+from Components.MenuList import MenuList
+from Components.Sources.StaticText import StaticText
+from Screens.MessageBox import MessageBox
+from Screens.Screen import Screen
+
 import utils
-from move import OrderScreenConf
 from bouquets import BouquetScreenConf
+from move import OrderScreenConf
+
 
 class BouquetsList(Screen):
         
     skin = """
-        <screen name="bouquet" title="%s" position="center,center" size="750,600">            
-              
+        <screen name="bouquet" title="" position="center,center" size="750,600">
             <ePixmap pixmap="$PLUGINDIR$/buttons/red.png" position="15,560" size="26,26" alphatest="on" />
-            <widget source="key_red" render="Label" position="55,560" size="220,28" backgroundColor="#A9A9A9" zPosition="2" transparent="1" foregroundColor="grey" font="Regular;24" halign="left" />
+            <widget source="key_red" render="Label" position="43,560" size="180,26" backgroundColor="#A9A9A9" zPosition="2" transparent="1" foregroundColor="grey" font="Regular;24" halign="left" />
 
-            <ePixmap pixmap="$PLUGINDIR$/buttons/green.png" position="190,560" size="26,26" alphatest="on" />
-            <widget source="key_green" render="Label" position="230,560" size="220,28" backgroundColor="#A9A9A9" zPosition="2" transparent="1" foregroundColor="grey" font="Regular;24" halign="left" />
+            <ePixmap pixmap="$PLUGINDIR$/buttons/green.png" position="230,560" size="26,26" alphatest="on" />
+            <widget source="key_green" render="Label" position="261,560" size="220,28" backgroundColor="#A9A9A9" zPosition="2" transparent="1" foregroundColor="grey" font="Regular;24" halign="left" />
 
-            <ePixmap pixmap="$PLUGINDIR$/buttons/yellow.png" position="345,560" size="26,26" alphatest="on" />
-            <widget source="key_yellow" render="Label" position="385,560" size="220,28" backgroundColor="#A9A9A9" zPosition="2" transparent="1" foregroundColor="grey" font="Regular;24" halign="left" />
+            <ePixmap pixmap="$PLUGINDIR$/buttons/yellow.png" position="488,560" size="26,26" alphatest="on" />
+            <widget source="key_yellow" render="Label" position="522,560" size="220,28" backgroundColor="#A9A9A9" zPosition="2" transparent="1" foregroundColor="grey" font="Regular;24" halign="left" />
 
-            <widget transparent="1" name="menu" position="0,0" size="640,550" scrollbarMode="showOnDemand" />
-         </screen>""" % (_("Bouquets List"))          
+            <widget name="tituloLabel" render="Label" position="55,12" size="640,40"  halign="center" />
+            <widget transparent="1" name="menu" position="55,57" size="640,493" scrollbarMode="showOnDemand" render="Listbox" itemHeight="25" font="Regular;24"/>
+        </screen>"""
         
     def __init__(self, session, args=0):
         self.skin=BouquetsList.skin.replace("$PLUGINDIR$", utils.easybouquet_plugindir)
         self.session = session
         Screen.__init__(self, session)
-               
+
+        self["Title"].text = _("Bouquets List")
+        self["tituloLabel"] = StaticText(_("Bouquets List"))
+
         self.rulesdict={}
         self.bouquetsOrder=[]
         self.menuList = []

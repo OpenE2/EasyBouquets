@@ -24,20 +24,20 @@ config.plugins.Easy.addSat=ConfigYesNo(default=True)
 class EasyBouquetScreen(ConfigListScreen, Screen):
     
     skin = """
-        <screen name="bouquet" title="" position="center,center" size="500,250">            
+        <screen name="bouquet" title="" position="center,center" size="636,250">
               
             <ePixmap pixmap="$PLUGINDIR$/buttons/red.png" position="15,210" size="26,26" alphatest="on" />
-            <widget source="key_red" render="Label" position="55,210" size="220,28" backgroundColor="#A9A9A9" zPosition="2" transparent="1" foregroundColor="grey" font="Regular;24" halign="left" />
+            <widget source="key_red" render="Label" position="47,210" size="169,28" backgroundColor="#A9A9A9" zPosition="2" transparent="1" foregroundColor="grey" font="Regular;24" halign="left" />
 
-            <ePixmap pixmap="$PLUGINDIR$/buttons/green.png" position="190,210" size="26,26" alphatest="on" />
-            <widget source="key_green" render="Label" position="230,210" size="220,28" backgroundColor="#A9A9A9" zPosition="2" transparent="1" foregroundColor="grey" font="Regular;24" halign="left" />
+            <ePixmap pixmap="$PLUGINDIR$/buttons/green.png" position="230,210" size="26,26" alphatest="on" />
+            <widget source="key_green" render="Label" position="264,210" size="168,28" backgroundColor="#A9A9A9" zPosition="2" transparent="1" foregroundColor="grey" font="Regular;24" halign="left" />
 
-            <ePixmap pixmap="$PLUGINDIR$/buttons/yellow.png" position="345,210" size="26,26" alphatest="on" />
-            <widget source="key_yellow" render="Label" position="385,210" size="220,28" backgroundColor="#A9A9A9" zPosition="2" transparent="1" foregroundColor="grey" font="Regular;24" halign="left" />
+            <ePixmap pixmap="$PLUGINDIR$/buttons/yellow.png" position="457,211" size="26,26" alphatest="on" />
+            <widget source="key_yellow" render="Label" position="498,210" size="124,28" backgroundColor="#A9A9A9" zPosition="2" transparent="1" foregroundColor="grey" font="Regular; 24" halign="left" />
 
-            <widget name="config" position="10,15" size="490,140" scrollbarMode="showOnDemand" selectionPixmap="$PLUGINDIR$/buttons/sel.png" />
-            <widget source="status" render="Label" position="5,85" zPosition="10" size="490,55" halign="center" valign="center" font="Regular;20" transparent="1" shadowColor="black" shadowOffset="-1,-1" />
-         </screen>"""            
+            <widget name="config" position="16,14" size="608,70" scrollbarMode="showOnDemand" foregroundColor="transpWhite" backgroundColor="transpBlack" font="Regular;24" />
+            <widget source="status" render="Label" position="16,100" zPosition="10" size="608,55" halign="center" valign="center" font="Regular;20" transparent="1" shadowColor="black" shadowOffset="-1,-1" />
+         </screen>"""
     
     def __init__(self, session):
         self.session = session

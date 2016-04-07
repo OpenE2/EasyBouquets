@@ -221,3 +221,7 @@ msgstr "Selecione um favorito primeiro"
 #
 msgid "The field is required!"
 msgstr "Campo requerido!"
+
+#
+msgid "Bouquets List"
+msgstr "Lista de Favoritos"

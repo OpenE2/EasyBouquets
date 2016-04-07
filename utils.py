@@ -6,7 +6,7 @@
 rules = '/etc/easybouquets/rules.conf'
 rulestmp = '/etc/easybouquets/rules_tmp.conf'
 
-easybouquet_version = "1.9"
+easybouquet_version = "2.0"
 easybouquet_plugindir = "/usr/lib/enigma2/python/Plugins/Extensions/EasyBouquets" 
 easybouquet_title = "EasyBouquets"
 easybouquet_developer = "gravatasufoca"
@@ -57,8 +57,8 @@ def preparaRegras(canais):
             else:
                 hd=False
         else:
-            hd=False     
-            
+            hd=False
+
         ordem=re.findall("(order\[\d+\])",regra)
         if len(ordem)>0:
             ordem=re.findall("\d+",ordem[0])[0]
@@ -126,7 +126,6 @@ def gerarChannellist(regras):
         sid=rule["sid"]
         hd=rule["hd"]
         ordem=rule["order"]
-       
      
         tmpregra={
                    "not":negado,
@@ -150,8 +149,8 @@ def addRule(regra):
     tp=regra["tp"]
     sid=regra["sid"]  
     hd=regra["hd"]  
-    ordem=regra["order"]    
-    
+    ordem=regra["order"]
+
     if negado:
         novaLinha="!%s"%(novaLinha) 
         
@@ -175,15 +174,18 @@ def addRule(regra):
 
 def obterSatelites():
     from Components.NimManager import nimmanager
-    
+    nimmanager.readTransponders()
     satConfigureds = nimmanager.getConfiguredSats()
-       
     sats=[]
     for sat in satConfigureds:
-#        print sat
+        print sat
         nome=nimmanager.getSatName(sat)
                 
         sats.append((sat,nome))
+
+
+    if nimmanager.hasNimType("DVB-C"):
+        sats.append(("DVB-C","DVB-C"))
     return sats
 
 
