@@ -2,16 +2,18 @@
 # Feel free to add comments and pas extra stuff You would have fitted in.
 # gravatasufoca@yahoo.com.br
 # Bruno Teixeira canto de Lima
+from Tools.Directories import resolveFilename, SCOPE_PLUGINS, SCOPE_CONFIG, SCOPE_SYSETC
 
-rules = '/etc/easybouquets/rules.conf'
-rulestmp = '/etc/easybouquets/rules_tmp.conf'
+rules = resolveFilename(SCOPE_SYSETC, "easybouquets/rules.conf")
+rulestmp = resolveFilename(SCOPE_SYSETC, "easybouquets/rules_tmp.conf")
+
 
 easybouquet_version = "2.0"
-easybouquet_plugindir = "/usr/lib/enigma2/python/Plugins/Extensions/EasyBouquets" 
+easybouquet_plugindir = resolveFilename(SCOPE_PLUGINS, "Extensions/EasyBouquets")
 easybouquet_title = "EasyBouquets"
 easybouquet_developer = "gravatasufoca"
-outdir = '/etc/enigma2'
-
+outdir = resolveFilename(SCOPE_CONFIG, "")
+_urlConfiguracoes="https://dl.dropboxusercontent.com/u/12772101/easyBouquets/versao.conf"
 
 def removeoldfiles():
     import glob,os
@@ -59,17 +61,17 @@ def preparaRegras(canais):
         else:
             hd=False
 
-        ordem=re.findall("(order\[\d+\])",regra)
-        if len(ordem)>0:
-            ordem=re.findall("\d+",ordem[0])[0]
-        else:
-            ordem=""        
+        # ordem=re.findall("(order\[\d+\])",regra)
+        # if len(ordem)>0:
+        #     ordem=re.findall("\d+",ordem[0])[0]
+        # else:
+        #     ordem=""
             
         rule=regra.split(":")[-1].lower()
         negado=rule.startswith("!")
         if negado:
             rule=rule.replace("!","",1)
-        novasRegras.append({"sat":sat.strip(),"tp":tp.strip(),"sid":sid.strip(),"rule":rule.strip(),"not":negado,"hd":hd,"order":ordem})
+        novasRegras.append({"sat":sat.strip(),"tp":tp.strip(),"sid":sid.strip(),"rule":rule.strip(),"not":negado,"hd":hd})
         
     return novasRegras  
 
@@ -125,7 +127,7 @@ def gerarChannellist(regras):
         tp=rule["tp"]
         sid=rule["sid"]
         hd=rule["hd"]
-        ordem=rule["order"]
+        # ordem=rule["order"]
      
         tmpregra={
                    "not":negado,
@@ -133,8 +135,8 @@ def gerarChannellist(regras):
                    "tp":tp,
                    "sid":sid,
                    "rule":regra,
-                   "hd":hd,
-                   "order":ordem
+                   "hd":hd
+                   # "order":ordem
               }
     
         channellist.append(addRule(tmpregra))
@@ -149,7 +151,7 @@ def addRule(regra):
     tp=regra["tp"]
     sid=regra["sid"]  
     hd=regra["hd"]  
-    ordem=regra["order"]
+    # ordem=regra["order"]
 
     if negado:
         novaLinha="!%s"%(novaLinha) 
@@ -166,8 +168,8 @@ def addRule(regra):
     if hd:
         novaLinha="hd[%s]:%s"%(hd,novaLinha)
         
-    if ordem:
-        novaLinha="order[%s]:%s"%(ordem,novaLinha)
+    # if ordem:
+    #     novaLinha="order[%s]:%s"%(ordem,novaLinha)
     
     return novaLinha
 
@@ -218,3 +220,15 @@ def positionToSat(position):
             
         return sat
     return ""
+
+
+def getConfiguracoes():
+	import urllib,ConfigParser
+
+	testfile = urllib.URLopener()
+	testfile.retrieve(_urlConfiguracoes, "/tmp/versao.conf")
+
+	config = ConfigParser.RawConfigParser()
+	config.read('/tmp/versao.conf')
+
+	return {"versao":config.get("versao","versao"),"url":config.get("url","ipk")}

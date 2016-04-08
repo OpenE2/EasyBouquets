@@ -29,7 +29,7 @@ class BouquetsList(Screen):
             <widget source="key_yellow" render="Label" position="522,560" size="220,28" backgroundColor="#A9A9A9" zPosition="2" transparent="1" foregroundColor="grey" font="Regular;24" halign="left" />
 
             <widget name="tituloLabel" render="Label" position="55,12" size="640,40"  halign="center" />
-            <widget transparent="1" name="menu" position="55,57" size="640,493" scrollbarMode="showOnDemand" render="Listbox" itemHeight="25" font="Regular;24"/>
+            <widget transparent="1" name="menu" position="55,57" size="640,493" scrollbarMode="showOnDemand" render="Listbox" itemHeight="30" font="Regular;24"/>
         </screen>"""
         
     def __init__(self, session, args=0):
@@ -88,7 +88,9 @@ class BouquetsList(Screen):
     
     def getMenuItens(self):
         
-        self.parserules()
+        if not self.parserules():
+            self.close()
+
         menuItens = []
         for bouquet in self.bouquetsOrder:
             key=bouquet.keys()[0]                  
@@ -101,14 +103,19 @@ class BouquetsList(Screen):
 
         self.rulesdict={}
         self.bouquetsOrder=[]
-      
-        filerules = open(utils.rules)
+
+        try:
+            filerules = open(utils.rules)
+        except:
+            self.session.open(MessageBox,_("The /etc/easybouquets/rules.conf file was not found!"), MessageBox.TYPE_ERROR, close_on_any_key=True, timeout=5)
+            return False
+
         for rule in filerules:
             rule = rule.replace('\n','')
             rule=rule.strip()
             if rule:
                 if not "=" in rule:
-                    self.session.open(MessageBox,_("The equal character (=) was not found at this line!\n%s") % (rule), MessageBox.TYPE_ERROR, close_on_any_key=True, timeout=20)
+                    self.session.open(MessageBox,_("The equal character (=) was not found at this line!\n%s") % (rule), MessageBox.TYPE_ERROR, close_on_any_key=True, timeout=10)
                     return False
                 favname, channellist = rule.partition("=")[::2]
                 favname = favname.strip()  

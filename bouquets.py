@@ -45,7 +45,7 @@ class BouquetScreenConf(ConfigListScreen, Screen):
             <widget source="key_blue" render="Label" position="514,560" size="220,26" backgroundColor="#A9A9A9" zPosition="2" transparent="1" foregroundColor="grey" font="Regular;24" halign="left" />
 
            <widget name="config" position="55,17" size="640,30" scrollbarMode="showOnDemand" selectionPixmap="$PLUGINDIR$/buttons/sel.png" font="Regular; 24" />
-            <widget transparent="1" name="menu" position="101,57" size="594,493" scrollbarMode="showOnDemand" render="Listbox" itemHeight="25" font="Regular;24"/>
+            <widget transparent="1" name="menu" position="101,57" size="594,493" scrollbarMode="showOnDemand" render="Listbox" itemHeight="30" font="Regular;24"/>
          </screen>"""
         
     def __init__(self, session, favname):

@@ -20,7 +20,7 @@ config.plugins.RuleConf.sat = ConfigSelection(choices=[])
 config.plugins.RuleConf.tp = ConfigSelection(choices=[])
 config.plugins.RuleConf.sid = ConfigText(fixed_size=False)
 config.plugins.RuleConf.hd = ConfigYesNo(default=False)
-config.plugins.RuleConf.ordem = ConfigText(fixed_size=False)
+# config.plugins.RuleConf.ordem = ConfigText(fixed_size=False)
 
 
 class RuleScreenConf(ConfigListScreen, Screen):
@@ -59,7 +59,7 @@ class RuleScreenConf(ConfigListScreen, Screen):
         config.plugins.RuleConf.tp.value = self.old["tp"]  
         config.plugins.RuleConf.sid.value = self.old["sid"]  
         config.plugins.RuleConf.hd.value = self.old["hd"]
-        config.plugins.RuleConf.ordem.value = self.old["order"]
+        # config.plugins.RuleConf.ordem.value = self.old["order"]
         
         config.plugins.RuleConf.tp.setChoices(choices=[("",_("None"))])
         
@@ -71,7 +71,7 @@ class RuleScreenConf(ConfigListScreen, Screen):
         self.list.append(getConfigListEntry(_("TP"), config.plugins.RuleConf.tp))
         self.list.append(getConfigListEntry(_("SID"), config.plugins.RuleConf.sid))
         self.list.append(getConfigListEntry(_("HD"), config.plugins.RuleConf.hd))
-        self.list.append(getConfigListEntry(_("Order"), config.plugins.RuleConf.ordem))
+        # self.list.append(getConfigListEntry(_("Order"), config.plugins.RuleConf.ordem))
         
         ConfigListScreen.__init__(self, self.list,session=self.session)
 
@@ -141,8 +141,8 @@ class RuleScreenConf(ConfigListScreen, Screen):
                                 "tp":config.plugins.RuleConf.tp.value,
                                 "sid":config.plugins.RuleConf.sid.value,
                                 "rule":config.plugins.RuleConf.name.value,
-                                "hd":config.plugins.RuleConf.hd.value,
-                                "order":config.plugins.RuleConf.ordem.value
+                                "hd":config.plugins.RuleConf.hd.value
+                                # "order":config.plugins.RuleConf.ordem.value
                               }
                     if self.edit:
                         channellist=self.gerarChannellist(novaregra,self.old["rule"],utils.obterRegras(favname))
@@ -176,7 +176,7 @@ class RuleScreenConf(ConfigListScreen, Screen):
             tp=rule["tp"]
             sid=rule["sid"]
             hd=rule["hd"]
-            ordem=rule["order"]
+            # ordem=rule["order"]
             
             if regra==regraantiga:
                 regra=novaregra["rule"]
@@ -185,7 +185,7 @@ class RuleScreenConf(ConfigListScreen, Screen):
                 tp=novaregra["tp"]
                 sid=novaregra["sid"]
                 hd=novaregra["hd"]
-                ordem=novaregra["order"]
+                # ordem=novaregra["order"]
             
          
             tmpregra={
@@ -194,8 +194,8 @@ class RuleScreenConf(ConfigListScreen, Screen):
                        "tp":tp,
                        "sid":sid,
                        "rule":regra,
-                       "hd":hd,
-                       "order":ordem
+                       "hd":hd
+                       # "order":ordem
                   }
         
             channellist.append(utils.addRule(tmpregra))

@@ -5,7 +5,7 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: EasyBouquet 1.9\n"
+"Project-Id-Version: EasyBouquet 2.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-05-24 06:31+0100\n"
 "PO-Revision-Date: 2012-12-22 09:26-0300\n"
@@ -225,3 +225,19 @@ msgstr "Campo requerido!"
 #
 msgid "Bouquets List"
 msgstr "Lista de Favoritos"
+
+#
+msgid "There is a new version avaiable!\nDo you want to update it?"
+msgstr "Existe uma nova versão disponível!\nDeseja atualizar?"
+
+#
+msgid "You must restart GUI for the update to take effect!\nOk?"
+msgstr "É necessário reiniciar a interface para que a atualização seja efetivada?\nConfirma?"
+
+#
+msgid "Was not possible to download the new version!\nTry again later, maybe it will be working..."
+msgstr "Não foi possível baixar a nova versão!\nTente mais tarde, quem sabe já esteja funcionando..."
+
+#
+msgid "The /etc/easybouquets/rules.conf file was not found!"
+msgstr "O arquivos /etc/easybouquets/rules.conf não foi encontrado!"
