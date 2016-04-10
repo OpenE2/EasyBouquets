@@ -10,16 +10,17 @@ import gettext
 from Components.Language import language
 from Tools.Directories import resolveFilename, SCOPE_PLUGINS
 
+PluginLanguageDomain = "EasyBouquets"
+PluginLanguagePath = "Extensions/EasyBouquets/locale"
 
 def localeInit():
-	gettext.bindtextdomain("EasyBouquets", resolveFilename(SCOPE_PLUGINS, "Extensions/EasyBouquets/locale"))
+	gettext.bindtextdomain(PluginLanguageDomain, resolveFilename(SCOPE_PLUGINS, PluginLanguagePath))
 
 def _(txt):
-	t = gettext.dgettext("EasyBouquets", txt)
-	if t == txt:
-		print "[EasyBouquets] fallback to default translation for", txt
-		t = gettext.gettext(txt)
-	return t
+	if gettext.dgettext(PluginLanguageDomain, txt):
+		return gettext.dgettext(PluginLanguageDomain, txt)
+	else:
+		print "[" + PluginLanguageDomain + "] fallback to default translation for " + txt
+		return gettext.gettext(txt)
 
-localeInit()
-language.addCallback(localeInit)
+language.addCallback(localeInit())

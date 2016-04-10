@@ -2,7 +2,7 @@
 # Feel free to add comments and pas extra stuff You would have fitted in.
 # gravatasufoca@yahoo.com.br
 # Bruno Teixeira canto de Lima
-
+from . import _
 from Components.config import config
 from Screens.Screen import Screen
 from Components.ActionMap import NumberActionMap
@@ -26,13 +26,13 @@ class LoadingScreen(Screen):
         </screen>"""
 
 
-    def __init__(self, session):
+    def __init__(self, session,gerados):
         self.skin = LoadingScreen.skin
         self.session = session
         Screen.__init__(self, session)
 
         self.onFirstExecBegin.append(self.comecar)
-
+        self.gerados = gerados
         self.rulesdict = {}
         self.bouquets={}
         self.bouquetsOrder=[]
@@ -52,6 +52,7 @@ class LoadingScreen(Screen):
         self.fechar.callback.append(self.close)
 
         self["progress"].setValue(0)
+
 
 
     def comecar(self):
@@ -105,7 +106,11 @@ class LoadingScreen(Screen):
                 currentServiceRef = self.session.nav.getCurrentlyPlayingServiceReference()
                 servicelist = ServiceList("")
                 servicelist.setRoot(currentServiceRef)
-                canais = servicelist.getServicesAsList()
+                try:
+                    canais = servicelist.getServicesAsList()
+                except:
+	                self.session.open(MessageBox, text = _("Please, put in valid service first."), type = MessageBox.TYPE_WARNING,close_on_any_key=True, timeout=5)
+	                return
 #                tmp=open("/tmp/teste","w")
                 servicehandler = eServiceCenter.getInstance()
                 for item in canais:
@@ -116,7 +121,6 @@ class LoadingScreen(Screen):
                         nome = item[1].strip()
 
                         if nome=="(...)" or re.match("\d+",nome): continue
-
                         tipo=str(canal.type)
 
                         # tipo=item[0].split(":")[2]
@@ -250,6 +254,10 @@ class LoadingScreen(Screen):
 
 #        self.favouritesTv.extend(self.bouquets["favourites"])
 #        self.favouritesTv.sort(key=lambda x: x.split(":")[-1].strip())
+
+        if config.plugins.Easy.ordenar.value:
+            self.favouritesTv=utils.ordenarCanais(self.favouritesTv,config.plugins.Easy.pref.value,gerados=self.gerados)
+
         for canal in self.favouritesTv:
             arq.write("#SERVICE %s\n"%canal)
 
@@ -278,7 +286,12 @@ class LoadingScreen(Screen):
 
     def parserules(self):
 #        tmp=open("/tmp/teste","w")
-        filerules = open(utils.rules)
+        try:
+            filerules = open(utils.rules)
+        except:
+            self.session.open(MessageBox,_("The /etc/easybouquets/rules.conf file was not found!"), MessageBox.TYPE_ERROR, close_on_any_key=True, timeout=20)
+            return False
+
         for rule in filerules:
             rule = rule.replace('\n','')
             rule=rule.strip()
@@ -429,7 +442,6 @@ class LoadingScreen(Screen):
                     retorno=True
 
             if retorno:
-                print "%s sat(%s - %s) tp(%s - %s) sid(%s - %s)"%(canal,regra["sat"],sat,regra["tp"],tp,regra["sid"],sid)
                 if regra["sat"]:
                     if regra["sat"]!=sat:
                         continue

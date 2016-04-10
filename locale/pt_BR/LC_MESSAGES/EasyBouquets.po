@@ -5,7 +5,7 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: EasyBouquet 2.0\n"
+"Project-Id-Version: EasyBouquet 2.1\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-05-24 06:31+0100\n"
 "PO-Revision-Date: 2012-12-22 09:26-0300\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-SourceCharset: iso-8859-15\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"Language: pt_BR\n"
+"Language: pt\n"
 "X-Generator: Poedit 1.5.4\n"
 
 #
@@ -144,11 +144,15 @@ msgstr ""
 
 #
 msgid "Rules Configuration"
-msgstr "Configuração de Regras"
+msgstr "Configuração das Regras"
 
 #
 msgid "Rule"
 msgstr "Regra"
+
+#
+msgid "Rules"
+msgstr "Regras"
 
 #
 msgid "Not"
@@ -164,11 +168,23 @@ msgstr "Nenhum"
 
 #
 msgid "Bouquets Configuration"
-msgstr "Configuração de Favoritos"
+msgstr "Configuração dos Favoritos"
 
 #
 msgid "Bouquet"
 msgstr "Favorito"
+
+#
+msgid "Add"
+msgstr "Adicionar"
+
+#
+msgid "Remove"
+msgstr "Remover"
+
+#
+msgid "Remove rule"
+msgstr "Remover regra"
 
 #
 msgid "Add rule"
@@ -185,6 +201,10 @@ msgstr "Mover"
 #
 msgid "Sort Bouquets"
 msgstr "Ordernar Favoritos"
+
+#
+msgid "Ordered by provider"
+msgstr "Ordenado pela operadora"
 
 #
 msgid "Up"
@@ -241,3 +261,38 @@ msgstr "Não foi possível baixar a nova versão!\nTente mais tarde, quem sabe j
 #
 msgid "The /etc/easybouquets/rules.conf file was not found!"
 msgstr "O arquivos /etc/easybouquets/rules.conf não foi encontrado!"
+
+#
+msgid "Those options was gotten from %s"
+msgstr "Estas opções foram obtidas a partir de %s"
+
+#
+msgid "There was a problem to access the %s!"
+msgstr "Aconteceu um erro ao acessar a url %s!"
+
+#
+msgid "Loading options..."
+msgstr "Carregando as opções..."
+
+#
+msgid "Getting services numbers..."
+msgstr "Obtendo as numerações..."
+
+#
+msgid "There are services with the same order.\nPlease, choose the right service order."
+msgstr "Existem canais com a ordem conflitante.\nPor favor, escolha a ordem correta."
+
+#
+msgid "Channel order doubts"
+msgstr "Dúvidas na ordenação"
+
+#
+msgid "Choose one!"
+msgstr "Escolha uma opção"
+
+#
+msgid "Providers List"
+msgstr "Lista de Operadoras"
+
+
+

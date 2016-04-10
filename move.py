@@ -2,7 +2,7 @@
 # Feel free to add comments and pas extra stuff You would have fitted in.
 # gravatasufoca@yahoo.com.br
 # Bruno Teixeira canto de Lima
-
+from . import _
 from Components.ConfigList import ConfigListScreen
 from Components.Sources.StaticText import StaticText
 from Components.config import  getConfigListEntry,ConfigSelection,ConfigSelectionNumber

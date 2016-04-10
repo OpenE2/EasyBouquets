@@ -8,12 +8,13 @@ rules = resolveFilename(SCOPE_SYSETC, "easybouquets/rules.conf")
 rulestmp = resolveFilename(SCOPE_SYSETC, "easybouquets/rules_tmp.conf")
 
 
-easybouquet_version = "2.0"
+easybouquet_version = "2.1"
 easybouquet_plugindir = resolveFilename(SCOPE_PLUGINS, "Extensions/EasyBouquets")
 easybouquet_title = "EasyBouquets"
 easybouquet_developer = "gravatasufoca"
 outdir = resolveFilename(SCOPE_CONFIG, "")
 _urlConfiguracoes="https://dl.dropboxusercontent.com/u/12772101/easyBouquets/versao.conf"
+_marker="1:832:1:0:0:0:0:0:0:0::"
 
 def removeoldfiles():
     import glob,os
@@ -231,4 +232,81 @@ def getConfiguracoes():
 	config = ConfigParser.RawConfigParser()
 	config.read('/tmp/versao.conf')
 
-	return {"versao":config.get("versao","versao"),"url":config.get("url","ipk")}
+	return {"versao":config.get("versao","versao"),"url":config.get("url","ipk"),"provedores":config.get("provedores","provedores").lower().split(",")}
+
+def is_number(s):
+    try:
+        float(s) # for int, long and float
+    except ValueError:
+        try:
+            complex(s) # for complex
+        except ValueError:
+            return False
+
+    return True
+
+
+def removerAcentos(input_str):
+	from unicodedata import normalize
+	return normalize('NFKD', input_str.decode("UTF-8")).encode('ASCII', 'ignore')
+
+
+def isHd(ref):
+    return ref.split(":")[2] in ["19","25"]
+
+def ordenarCanais(canais,sat,gerados=[]):
+    if sat=="DVB-C":
+        canais.sort(key=lambda x: int(x.split(":")[3],16))
+        tmp={}
+        for canal in canais:
+           sid= int(canal.split(":")[3],16)
+           tmp[sid]=canal
+
+        last= int(canais[-1].split(":")[3],16)
+
+    else:
+        tmpCanais=list(canais)
+        tmpRepetidos=[]
+        # seta os valores da ordenacao
+
+        for canal in gerados:
+            i=0
+            for service in canais:
+                # if "brasilia" in removerAcentos(canal.nome) and "brasilia" in removerAcentos(service.split(":")[-1]).lower():
+                #     print "%s - %s - %s"%(removerAcentos(canal.nome),removerAcentos(service.split(":")[-1]).lower(),removerAcentos(canal.nome) == removerAcentos(service.split(":")[-1]).lower())
+
+                if removerAcentos(canal.nome) == removerAcentos(service.split(":")[-1]).lower():
+                    # if "brasilia" in removerAcentos(canal.nome) and "brasilia" in removerAcentos(service.split(":")[-1]).lower():
+                    #     print "sim %s - %s"%(canal.hd,isHd(service))
+                    if canal.hd != isHd(service):
+                        continue
+
+                    # if "brasilia" in removerAcentos(canal.nome) and "brasilia" in removerAcentos(service.split(":")[-1]).lower():
+                    #     print service+"|"+str(canal.numero)
+
+                    if "|" in tmpCanais[i]:
+                        tmpRepetidos.append(service+"|"+str(canal.numero))
+                    else:
+                        tmpCanais[i]=service+"|"+str(canal.numero)
+                i+=1
+
+        tmpCanais.extend(tmpRepetidos)
+        canais=[canal if "|" in canal else canal+"|0" for canal in tmpCanais]
+
+        canais.sort(key=lambda x: int(x.split("|")[1]))
+        tmp={}
+        for canal in canais:
+            sid= int(canal.split("|")[1])
+            tmp[sid]=canal
+
+        last= int(canais[-1].split("|")[1])
+
+    novaLista=[]
+    for i in range(1,last):
+        if tmp.has_key(i):
+            novaLista.append(tmp[i] if "|" not in tmp[i] else tmp[i].split("|")[0])
+        else:
+            novaLista.append(_marker)
+
+    return novaLista
+

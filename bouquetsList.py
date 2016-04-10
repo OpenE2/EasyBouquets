@@ -2,6 +2,8 @@
 # Feel free to add comments and pas extra stuff You would have fitted in.
 # gravatasufoca@yahoo.com.br
 # Bruno Teixeira canto de Lima
+from . import _
+
 import re
 
 from Components.ActionMap import ActionMap

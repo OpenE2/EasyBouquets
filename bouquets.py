@@ -2,7 +2,7 @@
 # Feel free to add comments and pas extra stuff You would have fitted in.
 # gravatasufoca@yahoo.com.br
 # Bruno Teixeira canto de Lima
-
+from . import _
 from Components.ConfigList import ConfigListScreen
 from Components.Sources.StaticText import StaticText
 from Components.config import config, getConfigListEntry, ConfigText, \
@@ -13,9 +13,6 @@ from Components.ActionMap import ActionMap
 import utils
 from rules import RuleScreenConf
 from Screens.MessageBox import MessageBox
-
-
-
 
 config.plugins.BouquetConf = ConfigSubsection()
 config.plugins.BouquetConf.name = ConfigText(fixed_size=False)
