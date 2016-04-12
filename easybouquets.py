@@ -19,6 +19,8 @@ from loading import LoadingScreen
 from help import HelpScreen
 from bouquetsList import BouquetsList
 from enigma import eConsoleAppContainer
+from Screens.Console import Console
+
 
 config.plugins.Easy = ConfigSubsection()
 config.plugins.Easy.pref = ConfigSelection(choices=[])
@@ -145,17 +147,18 @@ class EasyBouquetScreen(ConfigListScreen, Screen):
 					self.ipkg_install = 'ipkg install -force-defaults'
 					self.ipkg_remove = self.ipkg + ' remove'
 
-				self.container.execute(self.ipkg + " /tmp/easyBouquets.ipk")
-
-				self.session.openWithCallback(self.reiniciar, MessageBox,
-				                              _("You must restart GUI for the update to take effect!\nOk?"),
-				                              MessageBox.TYPE_YESNO)
+				self.session.openWithCallback(self.chamarReiniciar, Console, cmdlist = [self.ipkg_install + " /tmp/easyBouquets.ipk"], closeOnSuccess = True)
 
 			except:
 				self.session.open(MessageBox,
 				                  text="Was not possible to download the new version!\nTry again later, maybe it will be working...",
 				                  type=MessageBox.TYPE_WARNING, close_on_any_key=True, timeout=10)
 
+
+	def chamarReiniciar(self):
+		self.session.openWithCallback(self.reiniciar, MessageBox,
+				                              _("You must restart GUI for the update to take effect!\nOk?"),
+				                              MessageBox.TYPE_YESNO)
 	def reiniciar(self, answer):
 		if answer:
 			from Screens.Standby import TryQuitMainloop

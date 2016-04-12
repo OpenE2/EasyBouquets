@@ -117,8 +117,7 @@ class LoadingScreen(Screen):
                     canal = eServiceReference(item[0])
                     if canal:
 
-                        # nome = servicehandler.info(canal).getName(canal)
-                        nome = item[1].strip()
+                        nome = servicehandler.info(canal).getName(canal)
 
                         if nome=="(...)" or re.match("\d+",nome): continue
                         tipo=str(canal.type)

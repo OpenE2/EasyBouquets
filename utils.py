@@ -8,7 +8,7 @@ rules = resolveFilename(SCOPE_SYSETC, "easybouquets/rules.conf")
 rulestmp = resolveFilename(SCOPE_SYSETC, "easybouquets/rules_tmp.conf")
 
 
-easybouquet_version = "2.1"
+easybouquet_version = "2.4"
 easybouquet_plugindir = resolveFilename(SCOPE_PLUGINS, "Extensions/EasyBouquets")
 easybouquet_title = "EasyBouquets"
 easybouquet_developer = "gravatasufoca"
