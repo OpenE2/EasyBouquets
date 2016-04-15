@@ -1,6 +1,3 @@
-import utils
-
-
 class Canal:
 	def __init__(self,numero, nome,selected=False,hd=False):
 		self. numero=numero
@@ -10,7 +7,7 @@ class Canal:
 
 	def __eq__(self, other):
 		if isinstance(other, self.__class__):
-			return self.nome==other.nome and self.numero==other.numero
+			return self.nome==other.nome and self.numero==other.numero and self.hd==other.hd
 
 	def __str__(self):
 		return str(self.numero)+" - "+self.nome

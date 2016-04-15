@@ -86,7 +86,8 @@ class EasyBouquetScreen(ConfigListScreen, Screen):
 			                            "red": self.cancel,
 			                            "cancel": self.cancel,
 			                            "ok": self.confirma,
-			                            "yellow": self.abrirListaBouquets
+			                            "yellow": self.abrirListaBouquets,
+			                            "blue":self.escreveCanais
 		                            }, -2)
 
 		self.setTitle("%s-%s by %s" % (utils.easybouquet_title, utils.easybouquet_version, utils.easybouquet_developer))
@@ -183,3 +184,45 @@ class EasyBouquetScreen(ConfigListScreen, Screen):
 
 	def mostraAjuda(self):
 		self.session.open(HelpScreen)
+
+	def escreveCanais(self):
+		from enigma import eServiceReference, eServiceCenter, iServiceInformation
+		from Components.Sources.ServiceList import ServiceList
+		import re
+
+
+		t=open("/tmp/canais.csv","w")
+
+		currentServiceRef = self.session.nav.getCurrentlyPlayingServiceReference()
+
+		servicelist = ServiceList("")
+		servicelist.setRoot(currentServiceRef)
+
+		canais = servicelist.getServicesAsList()
+
+		servicehandler = eServiceCenter.getInstance()
+		from sets import Set
+		ctmp=Set()
+		for item in canais:
+		    canal = eServiceReference(item[0])
+		    if canal:
+			    nome = servicehandler.info(canal).getName(canal)
+
+			    if nome=="(...)" or re.match("\d+",nome): continue
+			    tipo=str(canal.type)
+			    if tipo=="2": continue
+
+			    transponder_info = servicehandler.info(canal).getInfoObject(canal, iServiceInformation.sTransponderData)
+
+			    if transponder_info["tuner_type"]=="DVB-C":
+				    continue
+
+			    position = int(transponder_info["orbital_position"])
+
+			    if(position==config.plugins.Easy.pref.value):
+				    ctmp.add("%s,%s\n"%(nome,"True" if tipo=="25" else "False"))
+
+
+		for c in ctmp:
+			t.write(c)
+

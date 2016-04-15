@@ -7,14 +7,17 @@ from Tools.Directories import resolveFilename, SCOPE_PLUGINS, SCOPE_CONFIG, SCOP
 rules = resolveFilename(SCOPE_SYSETC, "easybouquets/rules.conf")
 rulestmp = resolveFilename(SCOPE_SYSETC, "easybouquets/rules_tmp.conf")
 
+etcDir= resolveFilename(SCOPE_SYSETC, "easybouquets")
 
-easybouquet_version = "2.4"
+
+easybouquet_version = "2.5"
 easybouquet_plugindir = resolveFilename(SCOPE_PLUGINS, "Extensions/EasyBouquets")
 easybouquet_title = "EasyBouquets"
 easybouquet_developer = "gravatasufoca"
 outdir = resolveFilename(SCOPE_CONFIG, "")
 _urlConfiguracoes="https://dl.dropboxusercontent.com/u/12772101/easyBouquets/versao.conf"
 _marker="1:832:1:0:0:0:0:0:0:0::"
+
 
 def removeoldfiles():
     import glob,os
@@ -224,15 +227,21 @@ def positionToSat(position):
 
 
 def getConfiguracoes():
-	import urllib,ConfigParser
+    import urllib, ConfigParser
 
-	testfile = urllib.URLopener()
-	testfile.retrieve(_urlConfiguracoes, "/tmp/versao.conf")
+    testfile = urllib.URLopener()
+    testfile.retrieve(_urlConfiguracoes, "/tmp/versao.conf")
 
-	config = ConfigParser.RawConfigParser()
-	config.read('/tmp/versao.conf')
+    config = ConfigParser.RawConfigParser()
+    config.read('/tmp/versao.conf')
 
-	return {"versao":config.get("versao","versao"),"url":config.get("url","ipk"),"provedores":config.get("provedores","provedores").lower().split(",")}
+    items= config.items("arquivos")
+    t={}
+    for item in items:
+        t[item[0]]=item[1]
+
+    return {"versao": config.get("versao", "versao"), "url": config.get("url", "ipk"),
+            "arquivos": t, "versaoArquivo": config.get("versao", "arquivos")}
 
 def is_number(s):
     try:

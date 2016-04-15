@@ -79,7 +79,7 @@ class ProvidersScreen(Screen):
 		self["menu"].setList([])
 		i=0
 		for item in self.menuList:
-			if item[0].lower() in self.configuracoes["provedores"]:
+			if item[0].lower() in self.configuracoes["arquivos"].keys():
 				self["menu"].addSelection(item[0], item[1], i, selected = False)
 				i+=1
 
@@ -110,7 +110,7 @@ class ProvidersScreen(Screen):
 	def getNumbers(self):
 		self["tituloLabel"].text = _("Getting services numbers...")
 
-		numeros=parser.getCanais(self.selecionado[1])
+		numeros=parser.getCanais(self.selecionado)
 		if not numeros:
 			self.session.open(MessageBox, text = _("There was a problem to access the %s!")%parser._urlPadrao+"/"+self.selecionado[1], type = MessageBox.TYPE_ERROR,close_on_any_key=True, timeout=5)
 			self.cancel()
