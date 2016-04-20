@@ -120,9 +120,9 @@ class LoadingScreen(Screen):
                         nome = servicehandler.info(canal).getName(canal)
 
                         if nome=="(...)" or re.match("\d+",nome): continue
-                        tipo=str(canal.type)
+                        # tipo=str(canal.type)
 
-                        # tipo=item[0].split(":")[2]
+                        tipo=item[0].split(":")[2]
 
                         transponder_info = servicehandler.info(canal).getInfoObject(canal, iServiceInformation.sTransponderData)
 

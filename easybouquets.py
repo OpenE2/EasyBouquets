@@ -34,7 +34,7 @@ class EasyBouquetScreen(ConfigListScreen, Screen):
 	    <screen name="bouquet" title="" position="center,center" size="736,250">
 
 	        <ePixmap pixmap="$PLUGINDIR$/buttons/red.png" position="15,210" size="126,26" alphatest="on" />
-	        <widget source="key_red" render="Label" position="47,210" size="269,28" backgroundColor="#A9A9A9" zPosition="2" transparent="1" foregroundColor="grey" font="Regular;24" halign="left" />
+	        <widget source="key_red" render="Label" position="47,210" size="269,28" backgroundColor="#A9A9A9" zPosition="2" transparent="1" foregroundColor="grey" font="Regular;24" halign="left"  />
 
 	        <ePixmap pixmap="$PLUGINDIR$/buttons/green.png" position="230,210" size="126,26" alphatest="on" />
 	        <widget source="key_green" render="Label" position="264,210" size="268,28" backgroundColor="#A9A9A9" zPosition="2" transparent="1" foregroundColor="grey" font="Regular;24" halign="left" />
@@ -80,14 +80,15 @@ class EasyBouquetScreen(ConfigListScreen, Screen):
 		self["status"] = StaticText(_("The \"Favourites (Tv)\" bouquet will be created based on the \"Preferential Satellite\" chosen."))
 		self["provider"]= StaticText()
 
-		self["actions"] = ActionMap(["OkCancelActions", "InputActions", "ColorActions", "DirectionActions"],
+		self["actions"] = ActionMap(["OkCancelActions", "InputActions", "ColorActions", "DirectionActions","SetupActions"],
 		                            {
 			                            "green": self.confirma,
 			                            "red": self.cancel,
 			                            "cancel": self.cancel,
 			                            "ok": self.confirma,
 			                            "yellow": self.abrirListaBouquets,
-			                            "blue":self.escreveCanais
+			                            "blue":self.escreveCanais,
+			                            "menu":self.escreveRefresh
 		                            }, -2)
 
 		self.setTitle("%s-%s by %s" % (utils.easybouquet_title, utils.easybouquet_version, utils.easybouquet_developer))
@@ -209,7 +210,7 @@ class EasyBouquetScreen(ConfigListScreen, Screen):
 			    nome = servicehandler.info(canal).getName(canal)
 
 			    if nome=="(...)" or re.match("\d+",nome): continue
-			    tipo=str(canal.type)
+			    tipo=item[0].split(":")[2]
 			    if tipo=="2": continue
 
 			    transponder_info = servicehandler.info(canal).getInfoObject(canal, iServiceInformation.sTransponderData)
@@ -220,9 +221,62 @@ class EasyBouquetScreen(ConfigListScreen, Screen):
 			    position = int(transponder_info["orbital_position"])
 
 			    if(position==config.plugins.Easy.pref.value):
-				    ctmp.add("%s,%s\n"%(nome,"True" if tipo=="25" else "False"))
+				    ctmp.add("%s,%s\n"%(nome.strip(),"True" if tipo in ["19","25"] else "False"))
 
 
 		for c in ctmp:
 			t.write(c)
 
+	def escreveRefresh(self):
+		from enigma import eServiceReference, eServiceCenter, iServiceInformation
+		from Components.Sources.ServiceList import ServiceList
+		import re
+
+
+		currentServiceRef = self.session.nav.getCurrentlyPlayingServiceReference()
+
+		servicelist = ServiceList("")
+		servicelist.setRoot(currentServiceRef)
+
+		canais = servicelist.getServicesAsList()
+
+		servicehandler = eServiceCenter.getInstance()
+		tmpCanais={}
+		for item in canais:
+			canal = eServiceReference(item[0])
+			if canal:
+			    nome = servicehandler.info(canal).getName(canal)
+			    tipo=item[0].split(":")[2]
+			    if tipo=="2": continue
+
+			    transponder_info = servicehandler.info(canal).getInfoObject(canal, iServiceInformation.sTransponderData)
+			    id=str(transponder_info["frequency"])
+
+			    if transponder_info["tuner_type"]!="DVB-C":
+				    id=id+str(transponder_info["polarization"])
+				    position=transponder_info["orbital_position"]
+			    else:
+				    position="DVB-C"
+				    id=id+str(transponder_info["symbol_rate"])
+
+
+			    if(position==config.plugins.Easy.pref.value):
+				    if not tmpCanais.has_key(id):
+						tmpCanais[id]="#SERVICE %s:%s"%(item[0],nome)
+
+		arq_name="%s/bouquets.tv"%(utils.outdir)
+		arq = open(arq_name, "a")
+		arq.write("#SERVICE 1:7:1:0:0:0:0:0:0:0:FROM BOUQUET \"userbouquet.refresh.tv\" ORDER BY bouquet\n")
+		arq.close()
+
+		arq_name="%s/userbouquet.refresh.tv"%(utils.outdir)
+		arq = open(arq_name, "w")
+
+		for canal in tmpCanais:
+			arq.write(tmpCanais[canal]+"\n")
+
+		arq.close()
+
+        from enigma import eDVBDB
+        eDVBDB = eDVBDB.getInstance()
+        eDVBDB.reloadBouquets()

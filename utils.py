@@ -10,7 +10,7 @@ rulestmp = resolveFilename(SCOPE_SYSETC, "easybouquets/rules_tmp.conf")
 etcDir= resolveFilename(SCOPE_SYSETC, "easybouquets")
 
 
-easybouquet_version = "2.5"
+easybouquet_version = "2.7"
 easybouquet_plugindir = resolveFilename(SCOPE_PLUGINS, "Extensions/EasyBouquets")
 easybouquet_title = "EasyBouquets"
 easybouquet_developer = "gravatasufoca"
@@ -238,10 +238,10 @@ def getConfiguracoes():
     items= config.items("arquivos")
     t={}
     for item in items:
-        t[item[0]]=item[1]
+        t[item[0]]=(int(item[1].split(",")[0]),item[1].split(",")[1])
 
     return {"versao": config.get("versao", "versao"), "url": config.get("url", "ipk"),
-            "arquivos": t, "versaoArquivo": config.get("versao", "arquivos")}
+            "arquivos": t}
 
 def is_number(s):
     try:

@@ -20,9 +20,9 @@ def getOpcoes():
 
 def getCanais(sat):
 	try:
-		# print "acessando: %s"%(_urlPadrao+"/"+sat[1])
+		print "acessando: %s"%(_urlPadrao+"/"+sat[1])
 		nomes=parseMapa(sat[0])
-
+		print "fez o parse!"
 		d = pq(url=_urlPadrao+"/"+sat[1])
 		opcoes= d("table.fixo").eq(1).find("tr").items()
 
@@ -62,21 +62,22 @@ def getCanais(sat):
 def parseMapa(sat):
 	import utils,os
 	sat=sat.lower()
-	# print "entrei aqui %s"%(sat)
-	versao=utils.getConfiguracoes()["versaoArquivo"]
+	print "entrei aqui %s"%(sat)
 	arquivos=utils.getConfiguracoes()["arquivos"]
-	# print arquivos
-	arqNome=arquivos[sat].split("/")[-1]
-	# print arqNome
+	versao=arquivos[sat][0]
+	print arquivos
+	arqNome=arquivos[sat][1].split("/")[-1]
+	print arqNome
 
 	atualiza=True
 	if not os.path.exists(utils.etcDir+"/"+arqNome):
 		import urllib
 		try:
 			testfile = urllib.URLopener()
-			testfile.retrieve(arquivos[sat], utils.etcDir+"/"+arqNome)
+			testfile.retrieve(rquivos[sat][1], utils.etcDir+"/"+arqNome)
 			atualiza=False
-		except:
+		except Exception,e:
+			print str(e)
 			return {}
 
 	arq=open(utils.etcDir+"/"+arqNome)
@@ -86,21 +87,22 @@ def parseMapa(sat):
 		import urllib
 		try:
 			testfile = urllib.URLopener()
-			testfile.retrieve(arquivos[sat], utils.etcDir+"/"+arqNome)
-		except:
+			testfile.retrieve(arquivos[sat][1], utils.etcDir+"/"+arqNome)
+		except Exception,e:
+			print str(e)
 			pass
 
 	arq=open(utils.etcDir+"/"+arqNome)
 
 	canais={}
 	for linha in arq.readlines():
-		if linha.startswith("#"): continue
+		if linha.startswith("#") or linha.strip()=="": continue
 
 		canal,equivalente=linha.partition("=")[::2]
 		hd=True if equivalente.split(";")[0]=="True" else False
 		equivalente=equivalente.split(";")[1]
 		equivalente=equivalente.strip()
-
+		print canal.encode('utf-8').lower()
 		canais[(canal.encode('utf-8').lower(),hd)]=equivalente.encode('utf-8')
 
 	return canais
@@ -219,7 +221,7 @@ def getConfiguracoes():
 
 # parseMapa2("sky")
 
-# canais=getCanais2("operadora.php?idO=39")
+# canais=getCanais2("operadora.php?idO=33")
 # t=open("canais2.csv","w")
 # from sets import Set
 # ctmp=Set()
