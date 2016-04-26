@@ -5,7 +5,7 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: EasyBouquet 2.1\n"
+"Project-Id-Version: EasyBouquet 2.8\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-05-24 06:31+0100\n"
 "PO-Revision-Date: 2012-12-22 09:26-0300\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-SourceCharset: iso-8859-15\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"Language: pt\n"
+"Language: pt_BR\n"
 "X-Generator: Poedit 1.5.4\n"
 
 #
@@ -294,5 +294,12 @@ msgstr "Escolha uma opção"
 msgid "Providers List"
 msgstr "Lista de Operadoras"
 
+#
+msgid "Create provider bouquet?"
+msgstr "Criar favorito da operadora?"
 
+
+#
+msgid "Writing provider favorites"
+msgstr "Escrevendo os favoritos da operadora"
 

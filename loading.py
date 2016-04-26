@@ -26,7 +26,7 @@ class LoadingScreen(Screen):
         </screen>"""
 
 
-    def __init__(self, session,gerados):
+    def __init__(self, session,gerados,provedor):
         self.skin = LoadingScreen.skin
         self.session = session
         Screen.__init__(self, session)
@@ -37,6 +37,7 @@ class LoadingScreen(Screen):
         self.bouquets={}
         self.bouquetsOrder=[]
         self.favouritesTv=[]
+        self.favoritoOperadora=[]
         self.favouritesRadio=[]
         self.satPref=""
 
@@ -52,6 +53,7 @@ class LoadingScreen(Screen):
         self.fechar.callback.append(self.close)
 
         self["progress"].setValue(0)
+        self.provedor=provedor
 
 
 
@@ -162,25 +164,6 @@ class LoadingScreen(Screen):
                             if not self.fazParte(nome, self.rulesdict["exclude"], sat, frequencia,sid,tipo):
                                 tmpCanal=self.fazParteFavorito(nome, sat, frequencia,sid,tipo)
                                 if tmpCanal:
-                                    # if not isinstance(tmpCanal, bool):
-                                    #     if tmpCanal["order"]:
-                                    #         indice=int(tmpCanal["order"])-1
-                                    #         if config.plugins.Easy.addSat.value:
-                                    #             self.favouritesTv.insert(indice , "%s:%s (%s)"%(item[0],nome,satName))
-                                    #         else:
-                                    #             self.favouritesTv.insert(indice , "%s:%s"%(item[0],nome))
-                                    #
-                                    #         try:
-                                    #             tmp=self.favouritesTv.pop(indice+1)
-                                    #             self.favouritesTv.append(tmp)
-                                    #         except:
-                                    #             pass
-                                    #     else:
-                                    #         if config.plugins.Easy.addSat.value:
-                                    #             self.favouritesTv.append("%s:%s (%s)"%(item[0],nome,satName))
-                                    #         else:
-                                    #             self.favouritesTv.append("%s:%s"%(item[0],nome))
-                                    # else:
                                     if config.plugins.Easy.addSat.value:
                                         self.favouritesTv.append("%s:%s (%s)"%(item[0],nome,satName))
                                     else:
@@ -190,11 +173,17 @@ class LoadingScreen(Screen):
                             if(position==config.plugins.Easy.pref.value):
                                 self.favouritesRadio.append("%s:%s"%(item[0],nome))
 
+                    if config.plugins.Easy.operadora.value and position==config.plugins.Easy.pref.value:
+                        self.favoritoOperadora.append("%s:%s"%(item[0],nome))
+
                 self.mudaSituacao(40, _("Deleting all favorites"))
 
                 self.t=eTimer()
                 self.t.callback.append(utils.removeoldfiles)
                 self.t.callback.append(self.escreveBouquets)
+                if config.plugins.Easy.operadora.value:
+                    self.t.callback.append(self.escreveOperadoraFavoritos)
+
                 self.t.start(1,True)
 
                 return True
@@ -212,6 +201,10 @@ class LoadingScreen(Screen):
         arq = open(arq_name, "w")
         arq.write("#NAME User - bouquets (TV)\n")
         arq.write("#SERVICE 1:7:1:0:0:0:0:0:0:0:FROM BOUQUET \"userbouquet.favourites.tv\" ORDER BY bouquet\n")
+
+        if config.plugins.Easy.operadora.value:
+            arq.write("#SERVICE 1:7:1:0:0:0:0:0:0:0:FROM BOUQUET \"userbouquet.provider.tv\" ORDER BY bouquet\n")
+
 
         escritos={}
         for ordem in self.bouquetsOrder:
@@ -251,12 +244,6 @@ class LoadingScreen(Screen):
         arq = open(arq_name, "w")
         arq.write("#NAME Favourites (TV)\n")
 
-#        self.favouritesTv.extend(self.bouquets["favourites"])
-#        self.favouritesTv.sort(key=lambda x: x.split(":")[-1].strip())
-
-        if config.plugins.Easy.ordenar.value:
-            self.favouritesTv=utils.ordenarCanais(self.favouritesTv,config.plugins.Easy.pref.value,gerados=self.gerados)
-
         for canal in self.favouritesTv:
             arq.write("#SERVICE %s\n"%canal)
 
@@ -264,6 +251,25 @@ class LoadingScreen(Screen):
         arq_name="%s/userbouquet.favourites.radio"%(utils.outdir)
         arq = open(arq_name, "w")
         arq.write("#NAME Favourites (Radio)\n")
+        arq.close()
+
+        self.t2=eTimer()
+        self.t2.callback.append(self.reloadList)
+        self.t2.start(1,True)
+
+
+    def escreveOperadoraFavoritos(self):
+        self.mudaSituacao(70, _("Writing provider favorites"))
+        arq_name="%s/userbouquet.provider.tv"%(utils.outdir)
+        arq = open(arq_name, "w")
+        arq.write("#NAME "+self.provedor +"\n")
+
+        if config.plugins.Easy.ordenar.value:
+            self.favoritoOperadora=utils.ordenarCanais(self.favoritoOperadora,config.plugins.Easy.pref.value,gerados=self.gerados)
+
+        for canal in self.favoritoOperadora:
+            arq.write("#SERVICE %s\n"%canal)
+
         arq.close()
 
         self.t2=eTimer()

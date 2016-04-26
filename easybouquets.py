@@ -26,25 +26,26 @@ config.plugins.Easy = ConfigSubsection()
 config.plugins.Easy.pref = ConfigSelection(choices=[])
 config.plugins.Easy.addSat = ConfigYesNo(default=False)
 config.plugins.Easy.ordenar = ConfigYesNo(default=False)
+config.plugins.Easy.operadora = ConfigYesNo(default=False)
 
 
 # Class EasyBouquetScreen
 class EasyBouquetScreen(ConfigListScreen, Screen):
 	skin = """
-	    <screen name="bouquet" title="" position="center,center" size="736,250">
+	    <screen name="bouquet" title="" position="center,center" size="736,280">
 
-	        <ePixmap pixmap="$PLUGINDIR$/buttons/red.png" position="15,210" size="126,26" alphatest="on" />
-	        <widget source="key_red" render="Label" position="47,210" size="269,28" backgroundColor="#A9A9A9" zPosition="2" transparent="1" foregroundColor="grey" font="Regular;24" halign="left"  />
+	        <ePixmap pixmap="$PLUGINDIR$/buttons/red.png" position="15,240" size="126,26" alphatest="on" />
+	        <widget source="key_red" render="Label" position="47,240" size="269,28" backgroundColor="#A9A9A9" zPosition="2" transparent="1" foregroundColor="grey" font="Regular;24" halign="left"  />
 
-	        <ePixmap pixmap="$PLUGINDIR$/buttons/green.png" position="230,210" size="126,26" alphatest="on" />
-	        <widget source="key_green" render="Label" position="264,210" size="268,28" backgroundColor="#A9A9A9" zPosition="2" transparent="1" foregroundColor="grey" font="Regular;24" halign="left" />
+	        <ePixmap pixmap="$PLUGINDIR$/buttons/green.png" position="230,240" size="126,26" alphatest="on" />
+	        <widget source="key_green" render="Label" position="264,240" size="268,28" backgroundColor="#A9A9A9" zPosition="2" transparent="1" foregroundColor="grey" font="Regular;24" halign="left" />
 
-	        <ePixmap pixmap="$PLUGINDIR$/buttons/yellow.png" position="457,211" size="126,26" alphatest="on" />
-	        <widget source="key_yellow" render="Label" position="498,210" size="224,28" backgroundColor="#A9A9A9" zPosition="2" transparent="1" foregroundColor="grey" font="Regular; 24" halign="left" />
+	        <ePixmap pixmap="$PLUGINDIR$/buttons/yellow.png" position="457,240" size="126,26" alphatest="on" />
+	        <widget source="key_yellow" render="Label" position="498,240" size="224,28" backgroundColor="#A9A9A9" zPosition="2" transparent="1" foregroundColor="grey" font="Regular; 24" halign="left" />
 
-	        <widget name="config" position="16,14" size="708,90" scrollbarMode="showOnDemand" font="Regular;24" />
-	        <widget source="status" render="Label" position="16,145" zPosition="10" size="708,55" halign="center" valign="center" font="Regular;20" transparent="1" shadowColor="black" shadowOffset="-1,-1" />
-	        <widget source="provider" render="Label" position="336,98" size="387,26"  zPosition="10"  halign="right" valign="center" font="Regular;20" transparent="1" shadowColor="black" shadowOffset="-1,-1" />
+	        <widget name="config" position="16,14" size="708,120" scrollbarMode="showOnDemand" font="Regular;24" />
+	        <widget source="status" render="Label" position="16,175" zPosition="10" size="708,55" halign="center" valign="center" font="Regular;20" transparent="1" shadowColor="black" shadowOffset="-1,-1" />
+	        <widget source="provider" render="Label" position="336,128" size="387,26"  zPosition="10"  halign="right" valign="center" font="Regular;20" transparent="1" shadowColor="black" shadowOffset="-1,-1" />
 	    </screen>"""
 
 	def __init__(self, session):
@@ -71,6 +72,7 @@ class EasyBouquetScreen(ConfigListScreen, Screen):
 		self.list.append(getConfigListEntry(_("Preferential Satellite"), config.plugins.Easy.pref))
 		self.list.append(getConfigListEntry(_("Add satellite name"), config.plugins.Easy.addSat))
 		self.list.append(getConfigListEntry(_("Ordered by provider"), config.plugins.Easy.ordenar))
+		self.list.append(getConfigListEntry(_("Create provider bouquet?"), config.plugins.Easy.operadora))
 
 		ConfigListScreen.__init__(self, self.list)
 
@@ -96,29 +98,38 @@ class EasyBouquetScreen(ConfigListScreen, Screen):
 		config.plugins.Easy.ordenar.addNotifier(self.abrirProviders,initial_call=False,immediate_feedback=True)
 		self.provider=None
 		self.gerados=[]
+		config.plugins.Easy.operadora.enabled=False
 
 
 	def abrirProviders(self,elemento):
 		if elemento:
 			if config.plugins.Easy.pref.value != "DVB-C":
 				if elemento.value:
+					config.plugins.Easy.operadora.enabled=True
 					self.session.openWithCallback(self.selecaoCallback, ProvidersScreen, config.plugins.Easy.pref.value)
 				else:
 					self.provider=None
 					self["provider"].text=""
+					config.plugins.Easy.operadora.enabled=False
+					config.plugins.Easy.operadora.value=False
 			else:
 				if elemento.value:
 					self.provider="DVB-C"
 					self["provider"].text="DVB-C"
+					config.plugins.Easy.operadora.enabled=True
 				else:
 					self.provider=None
 					self["provider"].text=""
+					config.plugins.Easy.operadora.enabled=False
+					config.plugins.Easy.operadora.value=False
 
 	def selecaoCallback(self,provider,gerados):
 		if provider is None:
 			config.plugins.Easy.ordenar.value=False
-			self["provider"].text
+			self["provider"].text=""
 			self.gerados=None
+			config.plugins.Easy.operadora.value=False
+			config.plugins.Easy.operadora.enabled=False
 			return
 
 		self.gerados=gerados
@@ -181,7 +192,7 @@ class EasyBouquetScreen(ConfigListScreen, Screen):
 
 	def showLoading(self, answer):
 		if answer:
-			self.session.open(LoadingScreen,self.gerados)
+			self.session.open(LoadingScreen,self.gerados,self["provider"].text)
 
 	def mostraAjuda(self):
 		self.session.open(HelpScreen)
@@ -265,12 +276,18 @@ class EasyBouquetScreen(ConfigListScreen, Screen):
 						tmpCanais[id]="#SERVICE %s:%s"%(item[0],nome)
 
 		arq_name="%s/bouquets.tv"%(utils.outdir)
-		arq = open(arq_name, "a")
-		arq.write("#SERVICE 1:7:1:0:0:0:0:0:0:0:FROM BOUQUET \"userbouquet.refresh.tv\" ORDER BY bouquet\n")
+		arq = open(arq_name, "r+")
+		check=False
+		for linha in arq.readlines():
+			if "userbouquet.refresh.tv" in linha:
+				check=True
+		if not check:
+			arq.write("#SERVICE 1:7:1:0:0:0:0:0:0:0:FROM BOUQUET \"userbouquet.refresh.tv\" ORDER BY bouquet\n")
 		arq.close()
 
 		arq_name="%s/userbouquet.refresh.tv"%(utils.outdir)
 		arq = open(arq_name, "w")
+		arq.write("#NAME epgrefresh\n")
 
 		for canal in tmpCanais:
 			arq.write(tmpCanais[canal]+"\n")
